@@ -9,9 +9,7 @@ import au.com.telstra.simcardactivator.Repositories.SimCardActivationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 
 @RestController
@@ -27,12 +25,16 @@ public class SimCardActivatorController {
 
     @PostMapping(path = "/activate", name = "Activate")
     public ActuationResult activate(@RequestBody SimCard simCard) {
-        //log.info(simCard.toString());
-        ICCID iccid = new ICCID(simCard.getIccid());
-        //log.info(iccid.toString());
-        ActuationResult actuationResult = simCardActuationHandler.actuate(iccid);
+        ActuationResult actuationResult = simCardActuationHandler.actuate(new ICCID(simCard.getIccid()));
         simCardActivationRepository.save(new SimCardActivation(simCard.getIccid(), simCard.getCustomerEmail(), actuationResult.getSuccess()));
+        //log.info(simCard.toString());
+        //log.info(iccid.toString());
         //log.info(simCardActivationRepository.findAll().toString());
         return actuationResult;
+    }
+
+    @GetMapping(path = "/query", name = "Query")
+    public SimCardActivation query(@RequestParam Long simCardId) {
+        return simCardActivationRepository.findById(simCardId).orElse(null);
     }
 }
