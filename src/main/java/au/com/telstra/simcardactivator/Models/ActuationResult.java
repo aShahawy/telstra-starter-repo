@@ -1,11 +1,14 @@
 package au.com.telstra.simcardactivator.Models;
 
-public class Result {
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
+public class ActuationResult {
     private Boolean success;
 
-    public Result() {
+    public ActuationResult() {
     }
-    public Result(Boolean success) {
+    public ActuationResult(Boolean success) {
         this.success = success;
     }
 

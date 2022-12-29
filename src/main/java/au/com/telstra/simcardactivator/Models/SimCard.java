@@ -1,6 +1,8 @@
 package au.com.telstra.simcardactivator.Models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class SimCard {
     private String iccid;
     private String customerEmail;
